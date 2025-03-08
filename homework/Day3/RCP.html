@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>터미네이터</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <h1>가위바위보 게임</h1>
+<!--///////////////////////////////////////// 게임시작버튼 /////////////////////////////////////////-->
+    <button id="startBtn">게임 시작</button>
+<!--///////////////////////////////////////// 게임 진행 영역, 플레이어 영역과 컴퓨터 영역 구분 /////////////////////////////////////////-->
+    <div id="gameArea">
+        <div class="game-board">
+            <div class="player">
+                <h2>플레이어</h2>
+                <div id="playerIcon" class="choice-icons">❓</div>
+                <p id="playerScore">점수: 0</p>
+            </div>
+            <div class="computer">
+                <h2>컴퓨터</h2>
+                <div id="computerIcon" class="choice-icons">❓</div>
+                <p id="computerScore">점수: 0</p>
+            </div>
+        </div>
+<!--///////////////////////////////////////// 제한시간 표시 /////////////////////////////////////////-->
+        <p class="timer" id="timer">제한 시간: 10초</p>
+<!--///////////////////////////////////////// 플레이어가 선택할 수 있는 영역 /////////////////////////////////////////-->
+        <div class="choices">
+            <span class="choice" data-choice="가위">✌️</span>
+            <span class="choice" data-choice="바위">✊</span>
+            <span class="choice" data-choice="보">🖐️</span>
+        </div>
+<!--///////////////////////////////////////// 게임 결과 표시영역 /////////////////////////////////////////-->
+        <p class="result-text" id="resultText">결과.</p>
+    </div>
+
+
+
+
+<!--///////////////////////////////////////// SCRIPT /////////////////////////////////////////-->
+    <script>
+
+        ///////////////////////////////////////// 사용할 변수 등록 /////////////////////////////////////////
+        const startBtn = document.getElementById("startBtn");
+        const gameArea = document.getElementById("gameArea");
+        const choices = document.querySelectorAll(".choice");
+        const playerIcon = document.getElementById("playerIcon");
+        const computerIcon = document.getElementById("computerIcon");
+        const playerScoreText = document.getElementById("playerScore");
+        const computerScoreText = document.getElementById("computerScore");
+        const timerText = document.getElementById("timer");
+        const resultText = document.getElementById("resultText");
+
+        let playerScore = 0;
+        let computerScore = 0;
+        let countdown;
+        let playerSelection = null;
+
+
+        ///////////////////////////////////////// 선택지 등록 /////////////////////////////////////////
+        const choiceIcons = {
+            "가위": "✌️",
+            "바위": "✊",
+            "보": "🖐️"
+        };
+
+        ///////////////////////////////////////// 컴퓨터 선택 랜덤화 /////////////////////////////////////////
+        function getRandomChoice() {
+            const choices = ["가위", "바위", "보"];
+            return choices[Math.floor(Math.random() * choices.length)];
+        }
+
+
+        ///////////////////////////////////////// 승패 구분 짓기, 결과값 리턴 /////////////////////////////////////////
+        function determineWinner(player, computer) {
+            if (player === computer) return "따라하지마라.";
+            if (
+                (player === "가위" && computer === "보") ||
+                (player === "바위" && computer === "가위") ||
+                (player === "보" && computer === "바위")
+            ) {
+                playerScore++;
+                return "🎉 너의 승리다 휴먼.";
+            } else {
+                computerScore++;
+                return "💻 나의 승리다 휴먼.";
+            }
+        }
+
+
+        ///////////////////////////////////////// 라운드 설정, 시간제한 설정, 시간 초과시 플레이어 랜덤 선택 /////////////////////////////////////////
+        function startRound() {
+            playerSelection = null;
+            playerIcon.textContent = "❓";
+            computerIcon.textContent = "❓";
+            resultText.textContent = "결과";
+
+            let timeLeft = 10;
+            timerText.textContent = `제한 시간: ${timeLeft}초`;
+
+            countdown = setInterval(() => {
+                timeLeft--;
+                timerText.textContent = `제한 시간: ${timeLeft}초`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(countdown);
+                    if (!playerSelection) {
+                        playerSelection = getRandomChoice();
+                        playerIcon.textContent = choiceIcons[playerSelection];
+                    }
+                    revealComputerChoice();
+                }
+            }, 1000);
+        }
+
+        ///////////////////////////// 컴퓨터 선택지 오픈 이후 점수 할당, 목표점수 달성 시 최종 결과표시 후 리셋, 목표달성 아닐시 새 라운드 진행 //////////////////////////////
+        function revealComputerChoice() {
+            const computerSelection = getRandomChoice();
+            computerIcon.textContent = choiceIcons[computerSelection];
+
+            setTimeout(() => {
+                let result = determineWinner(playerSelection, computerSelection);
+                resultText.textContent = result;
+
+                playerScoreText.textContent = `점수: ${playerScore}`;
+                computerScoreText.textContent = `점수: ${computerScore}`;
+
+                if (playerScore === 3) {
+                    resultText.textContent = "🎉 삐빅. 이번만 봐주는거다. 휴먼.";
+                    setTimeout(resetGame, 2000);
+                } else if (computerScore === 3) {
+                    resultText.textContent = "💻 삐빅..삐빅...애송이.";
+                    setTimeout(resetGame, 2000);
+                } else {
+                    setTimeout(startRound, 1000);
+                }
+            }, 1000);
+        }
+        ///////////////////////////////////////// 리셋 /////////////////////////////////////////
+        function resetGame() {
+            playerScore = 0;
+            computerScore = 0;
+            playerScoreText.textContent = "승리: 0";
+            computerScoreText.textContent = "승리: 0";
+            resultText.textContent = "결과.";
+            gameArea.style.display = "none";
+            startBtn.style.display = "block";
+        }
+
+        ///////////////////////////////////////// 게임시작 버튼 구현 /////////////////////////////////////////
+        startBtn.addEventListener("click", () => {
+            startBtn.style.display = "none"; 
+            gameArea.style.display = "block";
+            startRound();
+        });
+
+        ///////////////////////////////////////// 플레이어 선택지 읽기, 이후 컴퓨터 선택지 나타나게 함수 호출 /////////////////////////////////////////
+        choices.forEach(choice => {
+            choice.addEventListener("click", () => {
+                if (playerSelection) return;
+                clearInterval(countdown);
+                playerSelection = choice.getAttribute("data-choice");
+                playerIcon.textContent = choiceIcons[playerSelection];
+                revealComputerChoice();
+            });
+        });
+    </script>
+</body>
+</html>

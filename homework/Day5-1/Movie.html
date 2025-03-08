@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>시청한 영화 리스트</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>시청한 영화 리스트</h1>
+
+        <div class="input-field">
+            <label for="movie-title">영화 제목</label>
+            <input type="text" id="movie-title" placeholder="영화 제목을 입력하세요">
+        </div>
+
+        <div class="input-field">
+            <label for="movie-review">간단한 소감</label>
+            <textarea id="movie-review" placeholder="영화에 대한 간단한 소감을 작성하세요"></textarea>
+        </div>
+
+        <div class="input-field">
+            <label>별점</label>
+            <div class="star-rating" id="star-rating">
+                <span class="star" id="star1">★</span>
+                <span class="star" id="star2">★</span>
+                <span class="star" id="star3">★</span>
+                <span class="star" id="star4">★</span>
+                <span class="star" id="star5">★</span>
+            </div>
+        </div>
+
+        <button onclick="addMovie()">영화 추가</button>
+
+        <div class="movie-list" id="movie-list"></div>
+    </div>
+
+    <script>
+        const movieList = [];
+        let selectedRating = 0;
+
+        ///////////////////////////////////////////////////////// 시청한 영화 리스트로 추가하기 ////////////////////////////////////////////////////
+        function addMovie() {
+            const title = document.getElementById('movie-title').value;
+            const review = document.getElementById('movie-review').value;
+
+            if (!title || !review || selectedRating === 0) {
+                alert("모든 항목을 입력해주세요!");
+                return;
+            }
+
+            const movie = { title, review, rating: selectedRating };
+            movieList.push(movie);
+            displayMovies();
+            clearInputs();
+        }
+
+        ///////////////////////////////////////////////////////// 리스트 렌더 ////////////////////////////////////////////////////
+        function displayMovies() {
+            const movieListContainer = document.getElementById('movie-list');
+            movieListContainer.innerHTML = '';
+
+            movieList.forEach((movie) => {
+                const movieItem = document.createElement('div');
+                movieItem.classList.add('movie-item');
+                movieItem.innerHTML = `
+                    <h3>${movie.title}</h3>
+                    <p>${movie.review}</p>
+                    <div class="rating">별점: ${'★'.repeat(movie.rating)}${'☆'.repeat(5 - movie.rating)}</div>
+                `;
+                movieListContainer.appendChild(movieItem);
+            });
+        }
+
+        ///////////////////////////////////////////////////////// 추가 후 인풋값 초기화 ////////////////////////////////////////////////////
+        function clearInputs() {
+            document.getElementById('movie-title').value = '';
+            document.getElementById('movie-review').value = '';
+            document.querySelectorAll('.star').forEach(star => star.classList.remove('selected'));
+            selectedRating = 0;
+        }
+
+        ///////////////////////////////////////////////////////// 별점 클릭시 이하 별들에 색을 주기, 선택값 할당  ////////////////////////////////////////////////////
+        console.log(document.querySelectorAll('.star'));
+
+        document.querySelectorAll('.star').forEach((star, index) => {
+            star.addEventListener('click', function () {
+                selectedRating = index + 1;
+                const stars = document.querySelectorAll('.star');
+                for (let i = 0; i < stars.length; i++) {
+                    if (i < selectedRating) {
+                        stars[i].classList.add('selected');
+                    } else {
+                        stars[i].classList.remove('selected');
+                    }
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>

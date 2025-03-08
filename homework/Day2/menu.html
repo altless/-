@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>오스테리아 현</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: #2e1f1c;
+            color: #f8e4c9;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .menu-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            justify-content: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .menu-item {
+            display: none;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: #4a3228;
+            box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            font-size: 18px;
+            transition: transform 0.3s;
+        }
+        .menu-item img {
+            width: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .menu-item h3 {
+            margin: 10px 0 5px;
+            font-weight: bold;
+            font-size: 22px;
+            color: #f8e4c9;
+        }
+        .menu-item p {
+            color: #d6bfa9;
+            font-size: 16px;
+        }
+        .buttons {
+            margin-bottom: 30px;
+        }
+        button {
+            margin: 5px;
+            padding: 12px 18px;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            background-color: #a67c52;
+            color: white;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #8b5e3b;
+        }
+    </style>
+</head>
+<body>
+    <h1>오스테리아 현</h1>
+    <!-- /////////////////////////////////////////////////// 간단하게 button에 바로 onclick으로 함수와 변수 할당 ///////////////////////////////////////////////////////// -->
+    <div class="buttons">
+        <button onclick="filterMenu('all')">전체</button>
+        <button onclick="filterMenu('pizza')">피자</button>
+        <button onclick="filterMenu('pasta')">파스타</button>
+        <button onclick="filterMenu('risotto')">리조또</button>
+        <button onclick="filterMenu('grill')">그릴</button>
+    </div>
+    
+    <div class="menu-container">
+    <!-- //////////////////////////////////////////////////////////// 메뉴 리스트 ////////////////////////////////////////////////////////////////// -->
+        <div class="menu-item pizza">
+            <img src="https://ldb-phinf.pstatic.net/20240109_98/1704795303695ooE2r_JPEG/KakaoTalk_Photo_2024-01-09-19-14-54.jpeg">
+            <h3>마르게리타 피자</h3>
+            <p>₩27,000</p>
+            <p>프레쉬부팔라치즈, 토마토 소스, 생바질</p>
+        </div>
+        <div class="menu-item pizza">
+            <img src="https://ldb-phinf.pstatic.net/20240105_204/1704448362614Ph466_JPEG/KakaoTalk_Photo_2024-01-05-18-48-32_002jpeg.jpeg">
+            <h3>포르치니 트러플 버섯 피자</h3>
+            <p>₩29,000</p>
+            <p>프레쉬부팔라치즈 올리브오일 세가지버섯 화이트트러플오일 건포르치니파우더 레지아노치즈</p>
+        </div>
+        <div class="menu-item pizza">
+            <img src="https://ldb-phinf.pstatic.net/20250211_249/1739268130470u6BT5_JPEG/IMG_1229.jpeg">
+            <p>₩29,000</p>
+            <p>프레쉬부팔라치즈 토마토소스 올리브오일 파프리카 양파 쵸리조 피칸테오일 레지아노치즈</p>
+        </div>
+        <div class="menu-item pizza">
+            <img src="https://ldb-phinf.pstatic.net/20240719_122/1721364307287WxOg3_JPEG/IMG_3826.jpeg">
+            <h3>살시치아 소세지 피자</h3>
+            <p>₩30,000</p>
+            <p>프레쉬부팔라치즈 올리브오일 브로콜리 레지아노치즈</p>
+        </div>
+        <div class="menu-item pasta">
+            <img src="https://ldb-phinf.pstatic.net/20240105_213/1704448655854hyv22_JPEG/KakaoTalk_Photo_2024-01-05-18-48-33_004jpeg.jpeg">
+            <h3>까르보나라 크림 파스타</h3>
+            <p>₩19,000</p>
+            <p>오리지널(관찰레 난황 통후추 페코리노치즈)/크림(베이컨 크림 버섯 레지아노 난황)</p>
+        </div>
+        <div class="menu-item pasta">
+            <img src="https://ldb-phinf.pstatic.net/20230626_281/1687776296409lJ3kS_JPEG/IMG_3072.jpeg">
+            <h3>바질페스토 크림 파스타</h3>
+            <p>₩23,000</p>
+            <p>베이컨 바질페스토 그린빈스 레몬필 레지아노치즈</p>
+        </div>
+        <div class="menu-item pasta">
+            <img src="https://ldb-phinf.pstatic.net/20230626_129/1687776282453vmemu_JPEG/FB1B389F-32D7-4B0A-87AD-458D50C762F2.jpg">
+            <h3>포르치니 버섯 크림 파스타</h3>
+            <p>₩25,000</p>
+            <p>5가지버섯(포르치니 표고 양성이 새송이 느타리) 포르치니페스토 허브빵가루 레지아노치즈</p>
+        </div>
+        <div class="menu-item pasta">
+            <img src="https://ldb-phinf.pstatic.net/20230626_273/1687776264249q9r3m_JPEG/IMG_3068.jpeg">
+            <h3>살시치아 소세지 파스타</h3>
+            <p>₩27,000</p>
+            <p>수제소세지 쵸리조 페퍼론치노 브로콜리 레지아노치즈
+            </p>
+        </div>
+        <div class="menu-item pasta">
+            <img src="https://ldb-phinf.pstatic.net/20250212_99/17393136423282MUcR_JPEG/IMG_6638.jpeg">
+            <h3>1++ 한우 볼로네제 파스타</h3>
+            <p>₩28,000</p>
+            <p>1++한우bms(9)등급 볼로네제 소스, 스트라차텔라 치즈</p>
+        </div>
+        <div class="menu-item risotto">
+            <img src="https://ldb-phinf.pstatic.net/20240105_268/1704448372405sKnTC_JPEG/KakaoTalk_Photo_2024-01-05-18-48-32_003jpeg.jpeg">
+            <h3>트러플 버섯 크림 리조또</h3>
+            <p>₩28,000</p>
+            <p>네가지 버섯 화이트트러플오일 버섯페스토 고메버터 허브빵가루 레지아노치즈</p>
+        </div>
+        <div class="menu-item risotto">
+            <img src="https://ldb-phinf.pstatic.net/20230626_138/1687776060606KFpxB_JPEG/IMG_2993.jpeg">
+            <h3>해산물 토마토 리조또</h3>
+            <p>₩36,000</p>
+            <p>가비리관자 키조개관자 참소라 갑오징어 새우 전복 그린홍합 문어 제철조개 레지아노치즈</p>
+        </div>
+        <div class="menu-item risotto">
+            <img src="https://ldb-phinf.pstatic.net/20240105_268/1704448372405sKnTC_JPEG/KakaoTalk_Photo_2024-01-05-18-48-32_003jpeg.jpeg">
+            <h3>트러플 버섯 크림 리조또</h3>
+            <p>₩28,000</p>
+            <p>네가지 버섯 화이트트러플오일 버섯페스토 고메버터 허브빵가루 레지아노치즈</p>
+        </div>
+        <div class="menu-item risotto">
+            <img src="https://ldb-phinf.pstatic.net/20240105_62/1704448129730OtkIu_JPEG/KakaoTalk_Photo_2024-01-05-18-48-33_005jpeg.jpeg">
+            <h3>암소한우안심 샤프란 리조또</h3>
+            <p>₩38,000</p>
+            <p>암소한우안심 샤프란 고메버터 데미글라스 레지아노치즈</p>
+        </div>
+        <div class="menu-item grill">
+            <img src="https://ldb-phinf.pstatic.net/20240719_201/1721363972393jqQa6_JPEG/_______%28498%29.jpg">
+            <h3>에이징 닭다리살 스테이크</h3>
+            <p>₩30,000</p>
+            <p>마리네이드 닭다리살 4Pcs, 루꼴라, 피칸테 오일</p>
+        </div>
+        <div class="menu-item grill">
+            <img src="https://ldb-phinf.pstatic.net/20230719_197/16897613439560YSTK_JPEG/1689760662941-0_%281%29.jpg">
+            <h3>암소한우안심 샤또브리앙 스테이크</h3>
+            <p>₩85,000</p>
+            <p>암소한우안심 200g 구운야채 그라스비앙소스</p>
+        </div>
+        <div class="menu-item grill">
+            <img src="https://ldb-phinf.pstatic.net/20231212_80/17023497650895LPKS_PNG/%BD%BA%C5%A9%B8%B0%BC%A6_2023-12-12_%BF%C0%C0%FC_11.55.50.png">
+            <h3>그릴 이베리코</h3>
+            <p>₩35,000</p>
+            <p>이베리코 데 베요타 갈비살, 치미추리 소스</p>
+        </div>
+    </div>
+<!-- /////////////////////////////////////////////////// script ///////////////////////////////////////////////////////// -->
+    <script>
+        function filterMenu(category) { //카테고리를 인자로 받기
+            let items = document.querySelectorAll('.menu-item'); //menu-item 전체 = items로 선언
+            items.forEach(item => { //forEach로 items 검사, item = 각각의 메뉴
+                if (category === 'all') { // 카테고리 인자 = all 일시
+                    item.style.display = 'block'; // 모든 아이템 표시
+                } else { // 아니라면 
+                    item.style.display = item.classList.contains(category) ? 'block' : 'none'; //선택한 카테고리를 클래스로 포함하는 아이템만 표시, 아니면 display none으로 숨기기
+                }
+            });
+        }
+
+        filterMenu('all'); //초기 설정
+    </script>
+</body>
+</html>

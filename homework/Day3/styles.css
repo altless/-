@@ -1,0 +1,88 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    margin-top: 20px;
+}
+
+#startBtn {
+    padding: 15px 30px;
+    font-size: 22px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#gameArea {
+    display: none;
+    margin-top: 20px;
+}
+
+.game-board {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background: white;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
+    border-radius: 10px;
+}
+
+.player,
+.computer {
+    width: 45%;
+    text-align: center;
+}
+
+.choice-icons {
+    font-size: 80px;
+    min-height: 100px;
+}
+
+.choices {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.choice {
+    font-size: 50px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.choice:hover {
+    transform: scale(1.2);
+}
+
+.scoreboard {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.timer {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+.result-text {
+    margin-top: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+}
