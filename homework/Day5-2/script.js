@@ -80,33 +80,36 @@ function fetchUserData() {
 
 function renderUser(user) {
   resultDiv.innerHTML = `
-    <div class="user-info">
-      <img src="userIcon.png">
-      <h2>${user.username}</h2>
-      <p>${user.real_name}</p>
-    </div>
-    <div class="info-detail">
-      <div class="info-bar">
-        <span>Public Repos: ${user.public_repos}</span>
-        <span>Public Gists: ${user.public_gists}</span>
-        <span>Followers: ${user.followers}</span>
-        <span>Following: ${user.following}</span>
-      </div>
-      <div>
-        <p><strong>Company:</strong> ${user.company || '없음'}</p>
-        <p><strong>Website:</strong> ${user.blog ? `<a href="${user.blog}" target="_blank">${user.blog}</a>` : '없음'}</p>
-        <p><strong>Location:</strong> ${user.location || '없음'}</p>
-        <p><strong>Member Since:</strong> ${new Date(user.created_at).toLocaleDateString()}</p>
-      </div>
-    </div>
-    <div class="latest-repos">
-      <strong>Latest Repos:</strong>
-      ${user.latest_repos.map(repo => `
-        <div class="repo">
-          <strong>${repo.name}</strong> ⭐ ${repo.stars} | 👁️ ${repo.watchers} | 🍴 ${repo.forks}
+    <div class="user">
+      <div class="user-info">
+        <div calss="user-name">
+          <img src="userIcon.png">
+          <h2>${user.username}</h2>
+          <p>${user.real_name}</p>
         </div>
-      `).join('')}
+        <div class="info-detail">
+          <div class="info-bar">
+            <span>Public Repos: ${user.public_repos}</span>
+            <span>Public Gists: ${user.public_gists}</span>
+            <span>Followers: ${user.followers}</span>
+            <span>Following: ${user.following}</span>
+          </div>
+          <div class="info">
+            <p><strong>Company:</strong> ${user.company || '없음'}</p>
+            <p><strong>Website:</strong> ${user.blog ? `<a href="${user.blog}" target="_blank">${user.blog}</a>` : '없음'}</p>
+            <p><strong>Location:</strong> ${user.location || '없음'}</p>
+            <p><strong>Member Since:</strong> ${new Date(user.created_at).toLocaleDateString()}</p>
+          </div>
+        </div>
+      </div>
+      <div class="latest-repos">  
+        <strong>Latest Repos:</strong>
+          ${user.latest_repos.map(repo => `
+            <div class="repo">
+              <strong>${repo.name}</strong> ⭐ ${repo.stars} | 👁️ ${repo.watchers} | 🍴 ${repo.forks}
+            </div>
+          `).join('')}
+      </div>
     </div>
-
-  `;
+    `;
 }
