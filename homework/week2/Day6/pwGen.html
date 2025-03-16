@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="input-group">
+            <input type="text" id="password" placeholder="생성된 비밀번호">
+            <button class="copy-btn">📋</button>
+        </div>
+        <div class="length-controls">
+            <span class="length-label">비밀번호 길이</span>
+            <input type="number" id="length" min="5" max="70" value="12" placeholder="비밀번호 길이">
+            <button class="random-length">랜덤</button>
+        </div>
+        <div class="options">
+            <label><input type="checkbox" id="numbers"> Numbers (0-9)</label>
+            <label><input type="checkbox" id="lowercase"> Small Letters (a-z)</label>
+            <label><input type="checkbox" id="uppercase"> Capital Letters (A-Z)</label>
+            <label><input type="checkbox" id="symbols"> Symbols (@,!,#,$,%,&)</label>
+        </div>
+        <div class="rules">
+            최소 길이는 5입니다.<br>
+            최대 길이는 70입니다.<br>
+            강력한 비밀번호는 10~16자여야 합니다.
+        </div>
+        <button class="button" id="generate-btn">생성하기</button>
+        <button class="button" id="strong-btn">강력한 비밀번호</button>
+        <button class="button" id="ultra-btn">초강력 비밀번호 (70자)</button>
+    </div>
+    <script>
+        class PasswordGenerator {
+            constructor() {
+                this.charSets = {
+                    numbers: "0123456789",
+                    lowercase: "abcdefghijklmnopqrstuvwxyz",
+                    uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+                    symbols: "@!#$%&"
+                };
+            }
+
+            generate(length, options) {
+//////////////////////////////////////////////// 선택된 선택지만 반환하기 ///////////////////////////////////////////////                
+                const selectedTypes = Object.keys(this.charSets).filter(passType => options[passType]);
+                if (selectedTypes.length === 0) {
+                    alert("옵션을 선택하세요");
+                }
+
+//////////////////////////////////////////////// password에 랜덤 타입의 charset value값을 랜덤하게 넣기 ///////////////////////////////////////////////
+                let password = "";
+                console.log(length);
+                for (let i = 0; i < length; i++) {
+
+                    
+                    const randomType = selectedTypes[Math.floor(Math.random() * selectedTypes.length)]; //체크된 옵션중 랜덤하게 하나 선택
+                    const charSet = this.charSets[randomType]; // 선택된 옵션의 문자열
+                    password += charSet[Math.floor(Math.random() * charSet.length)]; //문자열을 인덱스로 접근해서 하나 추가
+                }
+                return password;
+            }
+        }
+
+        const generator = new PasswordGenerator();
+        const passwordField = document.getElementById("password");
+        const lengthInput = document.getElementById("length");
+        const copyBtn = document.querySelector(".copy-btn");
+        const generateBtn = document.querySelector("#generate-btn");
+        const strongBtn = document.querySelector("#strong-btn");
+        const ultraBtn = document.querySelector("#ultra-btn");
+        const randomLengthBtn = document.querySelector(".random-length");
+
+
+//////////////////////////////////////////////// 비밀번호 길이 제한, 잘못된 값 입력시 이전값으로 바꾸기 ///////////////////////////////////////////////
+        let previousValue = lengthInput.value;
+        lengthInput.addEventListener("blur", function() { 
+            //input 이벤트 받을시 21 입력하려고 했는데 2에서 오류 알림 
+            //시간 차를 두고 하려다가 어색해져 blur로 변경 
+            let length = this.value;
+
+            if (isNaN(length) || length < 5 || length > 70) {
+                alert("비밀번호 길이는 5~70 사이여야 합니다.");
+                this.value = previousValue;
+            } else {
+                previousValue = this.value;
+            }
+        });
+
+
+//////////////////////////////////////////////// checked 속성활용, 활성화된 선택지 체크, 강력한 비밀번호는 모두 활성화 시키기 ///////////////////////////////////////////////
+        function getOptions(length = null, forceAll = false) {
+            return {
+                length: length !== null ? length : parseInt(lengthInput.value), //길이값을 넣어 호출시 해당 길이값 사용 아니면 사용자 입력값 사용 (강력비밀번호의 길이 강제하기)
+                numbers: forceAll || document.getElementById("numbers").checked,
+                lowercase: forceAll || document.getElementById("lowercase").checked,
+                uppercase: forceAll || document.getElementById("uppercase").checked,
+                symbols: forceAll || document.getElementById("symbols").checked,
+            };
+        }
+
+        //////////////////////////////////////////////// 비밀번호 생성 매서드에 길이, 옵션 활성화 유무를 넣어 호출 및 비밀번호 렌더링 /////////////////////////////////////////////// 
+        function genPassword(length, forceAll = false) {
+            const options = getOptions(length, forceAll);
+            passwordField.value = generator.generate(options.length, options);
+        }
+
+        //////////////////////////////////////////////// 버튼 모음 /// 생성, 강력(10~16자), 초강력(70자), 랜덤 길이, 복사///////////////////////////////////////////////        
+        generateBtn.addEventListener("click", () => genPassword());
+        strongBtn.addEventListener("click", () => {
+            let length = Math.floor(Math.random() * 7) + 10;        
+            genPassword(length, true) // true -> 모든 옵션 활성화
+        }); 
+        ultraBtn.addEventListener("click", () => genPassword(70, true));
+        randomLengthBtn.addEventListener("click", () => {
+            lengthInput.value = Math.floor(Math.random() * 66) + 5;
+        });
+        copyBtn.addEventListener("click", () => {
+            passwordField.select();
+            document.execCommand("copy");
+            alert("비밀번호가 복사되었습니다!");
+        });
+    </script>
+</body>
+
+</html>

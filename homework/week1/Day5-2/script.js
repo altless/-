@@ -25,35 +25,35 @@ function Repo(name, stars, watchers, forks) {
 }
 
 const users = {
-  "h": new User("h", "홍진호", 22, 22, 22, 22, "zerg", "https://www.22ee.com", "'차'행성", "2222-22-22", [
+  "h": new User("h", "", 22, 22, 22, 22, "zerg", "https://www.22ee.com", "차행성", "2222-22-22", [
     new Repo("rock-paper-scissors-app", 22, 22, 22),
     new Repo("menu-board-app", 22, 22, 22)
   ]),
-  "ho": new User("ho", "이진호", 2, 2, 2, 2, "무직", "https://www.inflearn.com/", "서울", "2020-02-02", [
+  "ho": new User("ho", "", 2, 2, 2, 2, "무직", "https://www.inflearn.com/", "서울", "2020-02-02", [
     new Repo("book-list-app", 2, 2, 2),
     new Repo("rock-paper-scissors-app", 2, 2, 2),
     new Repo("menu-board-app", 2, 2, 2)
   ]),
-  "hot": new User("hot", "핫도그", 1, 2, 3, 4, "무직", "https://www.inflearn.com/", "LA", "2020-02-01", [
+  "hot": new User("hot", "", 1, 2, 3, 4, "무직", "https://www.inflearn.com/", "LA", "2020-02-01", [
     new Repo("book-list-app", 15, 7, 3),
     new Repo("github-user-finder-app", 17, 14, 12),
     new Repo("rock-paper-scissors-app", 18, 118, 114)
   ]),
-  "hots": new User("hots", "현다원", 2, 15, 81, 51, "무직", "https://www.inflearn.com/", "제주", "2023-05-31", [
+  "hots": new User("hots", "", 2, 15, 81, 51, "무직", "https://www.inflearn.com/", "제주", "2023-05-31", [
     new Repo("rock-paper-scissors-app", 15, 7, 13),
     new Repo("github-user-finder-app", 7, 14, 2),
     new Repo("menu-board-app", 18, 18, 4)
   ]),
-  "hotsu": new User("hotsu", "핫식수", 5, 7, 5, 5, "무직", "https://www.hot6su.com/", "세계일주중", "2020-02-01", []),
-  "hotsun": new User("hotsun", "김호선", 2, 1, 8, 5, "무직", "https://www.inflearn.com/", "대전", "2020-02-01", [
+  "hotsu": new User("hotsu", "", 5, 7, 5, 5, "무직", "https://www.hot6su.com/", "냉장고", "2020-02-01", []),
+  "hotsun": new User("hotsun", "", 2, 1, 8, 5, "무직", "https://www.inflearn.com/", "대전", "2020-02-01", [
     new Repo("calculator", 7, 4, 2),
     new Repo("menu-board-app", 18, 800, 4000)
   ]),
-  "hotsunn": new User("hotsunn", "김호산", 12, 1, 8, 5, "무직", "https://www.inflearn.com/", "분당", "2020-02-01", [
+  "hotsunn": new User("hotsunn", "", 12, 1, 8, 5, "무직", "https://www.inflearn.com/", "분당", "2020-02-01", [
     new Repo("book-list-app", 35, 7, 3),
     new Repo("calculator", 18, 8, 4)
   ]),
-  "hotsunny": new User("hotsunny", "송호선", 22, 31, 5, 24, "무직", "https://www.inflearn.com/", "전주", "2020-01-28", [
+  "hotsunny": new User("hotsunny", "", 22, 31, 5, 24, "무직", "https://www.inflearn.com/", "서울", "2020-01-28", [
     new Repo("book-list-app", 25, 17, 3),
     new Repo("github-user-finder-app", 7, 4, 2),
     new Repo("menu-board-app", 18, 28, 4),
@@ -113,3 +113,4 @@ function renderUser(user) {
     </div>
     `;
 }
+

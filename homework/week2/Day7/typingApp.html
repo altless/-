@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>타자 연습기</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>타자 연습기</h1>
+        <p id="sentence">문장을 불러오는 중...</p>
+        <input type="text" id="inputField" placeholder="문장을 입력하세요..." autofocus>
+        <div id="stats">
+            <p>시간: <span id="time">0</span>초</p>
+            <p>현재 타속: <span id="cpm">0</span> 타/분</p>
+            <p>최고 타속: <span id="maxCpm">0</span> 타/분</p>
+            <p>정확도: <span id="accuracy">100</span>%</p>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        let sentences = [];
+        const sentenceElement = document.getElementById("sentence");
+        const inputField = document.getElementById("inputField");
+        const timeElement = document.getElementById("time");
+        const cpmElement = document.getElementById("cpm");
+        const maxCpmElement = document.getElementById("maxCpm");
+        const accuracyElement = document.getElementById("accuracy");
+        const resultElement = document.getElementById("result");
+
+        let startTime, timerInterval;
+        let currentSentence = "";
+        let maxCpm = 0;
+        let totalCpm = 0;
+        let cpmRecords = [];
+        let completedRounds = 0;
+        const totalRounds = 5;
+
+        
+//////////////////////////////////////////////// 랜덤 영어 명언 API에서 랜덤 문장 생성 후 붙여넣기 ///////////////////////////////////////////////
+        async function fetchSentence() {
+            try {
+                let response = await fetch("https://api.adviceslip.com/advice");
+                let data = await response.json();
+                currentSentence = data.slip.advice;
+                updateSentence();
+            } catch (error) {
+                currentSentence = "api 호출 실패";
+                updateSentence();
+            }
+        }
+
+//////////////////////////////////////////////// 생성된 명언 랜더, 카운트 초기화 ///////////////////////////////////////////////
+        function updateSentence() {
+            sentenceElement.innerHTML = currentSentence.split("").map(char => `<span>${char}</span>`).join("");
+            inputField.value = "";
+            inputField.focus();
+            startTime = null;
+            timeElement.textContent = "0";
+            cpmElement.textContent = "0";
+            accuracyElement.textContent = "100";
+            clearInterval(timerInterval);
+        }
+
+
+        function calculateStats() {
+            const timeElapsed = (Date.now() - startTime) / 1000;
+            timeElement.textContent = timeElapsed.toFixed(1);
+
+            const charsTyped = inputField.value.length;
+            let correctChars = 0;
+            let sentenceChars = sentenceElement.querySelectorAll("span");
+
+//////////////////////////////////////////////// 정확히 입력한 것, 아닌것 색구별 ///////////////////////////////////////////////
+            inputField.value.split("").forEach((char, i) => {
+                if (sentenceChars[i]) {
+                    if (char === currentSentence[i]) {
+                        sentenceChars[i].classList.add("correct");
+                        sentenceChars[i].classList.remove("incorrect");
+                        correctChars++;
+                    } else {
+                        sentenceChars[i].classList.add("incorrect");
+                        sentenceChars[i].classList.remove("correct");
+                    }
+                }
+            });
+
+//////////////////////////////////////////////// 타속 계산, 정확한 입력만 타속에 포함 (cpm기준 사용) ///////////////////////////////////////////////
+            const cpm = timeElapsed > 0 ? (correctChars / (timeElapsed / 60)).toFixed(1) : 0;
+            cpmElement.textContent = cpm;
+
+//////////////////////////////////////////////// 정확도 계산 ///////////////////////////////////////////////
+            const accuracy = charsTyped > 0 ? (correctChars / charsTyped * 100).toFixed(1) : 100;
+            accuracyElement.textContent = accuracy;
+        }
+
+//////////////////////////////////////////////// 평균타속 계산해서, 결과 렌더 ///////////////////////////////////////////////
+        function displayResults() {
+            const avgCpm = (cpmRecords.reduce((a, b) => a + b, 0) / cpmRecords.length).toFixed(1);
+            resultElement.innerHTML = `<p>최고 타속: ${maxCpm} 타/분</p>
+                                       <p>평균 타속: ${avgCpm} 타/분</p>`;
+            resultElement.style.display = "block";
+            inputField.disabled = true;
+        }
+
+//////////////////////////////////////////////// 입력시작시 카운트, 현재타속, 최고타속 화면에 갱신, 5라운드 이후 결과표시 ///////////////////////////////////////////////
+        inputField.addEventListener("input", () => {
+            if (!startTime) {
+                startTime = Date.now();
+                timerInterval = setInterval(calculateStats, 100);
+            }
+
+            calculateStats();
+
+            if (inputField.value.length === currentSentence.length || inputField.value === currentSentence) {
+                clearInterval(timerInterval);
+                let lastCpm = parseFloat(cpmElement.textContent);
+                cpmRecords.push(lastCpm);
+
+                if (lastCpm > maxCpm) {
+                    maxCpm = lastCpm;
+                    maxCpmElement.textContent = maxCpm;
+                }
+
+                completedRounds++;
+                if (completedRounds >= totalRounds) {
+                    displayResults();
+                } else {
+                    fetchSentence();
+                }
+            }
+        });
+
+        fetchSentence();
+    </script>
+</body>
+</html>
